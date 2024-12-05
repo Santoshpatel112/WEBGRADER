@@ -336,7 +336,8 @@
 
 import React, { useState } from 'react';
 import './ScoreCard.css';
-import PerformanceCard from './PerformanceCard';
+// import PerformanceCard from './PerformanceCard';
+import PerformanceWrapper from './PerformanceWrapper ';
 import FeatureList from './FeatureList';
 import SEOWrapper from './SEOWrapper';
 import MobileWrapper from './MobileWrapper';
@@ -423,7 +424,7 @@ const SiteGrade = () => {
         </main>
       </div>
 <div className="p-4 flex justify-center"><img src="//static.hsappstatic.net/ui-images/static-2.696/optimized/design-manager.svg" alt="" /></div>
-      <div className="p-4"><PerformanceCard /></div>
+      <div className="p-4"><PerformanceWrapper/></div>
       <FeatureList />
       <div className='p-4 flex justify-center'><img src="//static.hsappstatic.net/ui-images/static-2.696/optimized/global.svg" alt="" /></div>
       <SEOWrapper />

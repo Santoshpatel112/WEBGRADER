@@ -24,7 +24,7 @@ const SEOWrapper = () => {
         title: 'Content Plugins',
         status: 'PASS',
         message: '*Clap, clap, clap* Good job!',
-        description: 'Search engines can’t always understand content that relies on browser plugins, such as Flash.'
+        description: 'Search engines cant always understand content that relies on browser plugins, such as Flash.'
       },
       {
         title: 'Descriptive Link Text',

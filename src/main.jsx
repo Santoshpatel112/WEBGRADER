@@ -22,7 +22,7 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <PageSpeedProvider>
       <RouterProvider router={router} />
-      <PerformanceWrapper />
+      {/* <PerformanceWrapper /> */}
     </PageSpeedProvider> 
 
   </StrictMode>

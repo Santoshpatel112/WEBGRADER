@@ -232,7 +232,7 @@ const PerformanceCard = ({
         {/* Page Size */}
         <div className="bg-white p-4 rounded-lg shadow text-center">
           <h3 className="text-gray-700 font-semibold">Page Size</h3>
-          <div className="text-2xl font-bold text-green-500 mt-2">{pageSize} MB</div>
+          <div className="text-2xl font-bold text-green-500 mt-2">{pageSize} </div>
         </div>
 
         {/* Page Requests */}
