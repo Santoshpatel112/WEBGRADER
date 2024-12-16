@@ -22,7 +22,7 @@ function Lighthouse() {
       </div>
       <div className="right-panel">
         {/* SiteGrade can be used for additional data display or information */}
-        <SiteGrade data={analysisData}/>
+        <SiteGrade data={analysisData.url}/>
       </div>
     </div>
   );

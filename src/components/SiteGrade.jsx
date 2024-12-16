@@ -345,7 +345,7 @@ import SecurityWrapper from './SecurityWrapper';
 import Content from './lastcontent';
 import Lcontent from './Last2ndcontent';
 
-const SiteGrade = () => {
+const SiteGrade = (url) => {
   // Mobile wrapper
   const mobileData = {
     score: 0,
