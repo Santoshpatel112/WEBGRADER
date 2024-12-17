@@ -643,18 +643,167 @@
 
 
 
+// import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import PageSpeedProvider from '../Context/context';
+
+// const WebsiteGrader = () => {
+//   let [url, setUrl] = useState(" ");
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(null);
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async (event) => {
+//     event.preventDefault();
+//     setLoading(true);
+//     setError(null);
+
+//     try {
+//       const apiUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}`;
+//       const response = await fetch(apiUrl);
+
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`);
+//       }
+
+//       const data = await response.json();
+//       const lighthouseResult = data?.lighthouseResult;
+//       if (!lighthouseResult) {
+//         throw new Error("Lighthouse data is not available in the API response.");
+//       }
+
+//       const performanceScore = lighthouseResult.categories?.performance?.score * 100 || 0;
+//       const accessibilityScore = lighthouseResult.categories?.accessibility?.score * 100 || 0;
+//       const bestPracticesScore = lighthouseResult.categories?.["best-practices"]?.score * 100 || 0;
+//       const seoScore = lighthouseResult.categories?.seo?.score * 100 || 0;
+
+//       const resultData = {
+//         url,
+//         scores: {
+//           aggregate: (performanceScore + accessibilityScore + bestPracticesScore + seoScore) / 4,
+//           details: [
+//             { label: "Performance", score: performanceScore, maxScore: 100, color: "red" },
+//             { label: "Accessibility", score: accessibilityScore, maxScore: 100, color: "orange" },
+//             { label: "Best Practices", score: bestPracticesScore, maxScore: 100, color: "blue" },
+//             { label: "SEO", score: seoScore, maxScore: 100, color: "green" },
+//           ],
+//         },
+//       };
+
+//       navigate("/lighthouse", { state: { analysisData: resultData } });
+//     } catch (error) {
+//       setError(`Failed to fetch performance data: ${error.message}`);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <>
+//       {url ? (
+//         <PageSpeedProvider url={url}>
+//           <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4 animate-fadeIn">
+//             <div className="absolute top-4 right-4 flex items-end space-x-4 mb-5">
+//               {/* <div className="relative">
+//                 <button
+//                   className="flex items-center space-x-2 text-black rounded-3xl border-2 border-gray-500 hover:scale-105 transform transition-transform duration-300"
+//                   onClick={() => setShowLanguageOptions(!showLanguageOptions)}
+//                 >
+//                   English <span className="icon icon-angle-down"></span>
+//                 </button>
+//                 {showLanguageOptions && (
+//                   <ul className="absolute bg-white border rounded-md mt-2 w-40">
+//                     <li className="p-2">
+//                       <a href="https://website.grader.com/de/" className="text-black">Deutsch</a>
+//                     </li>
+//                     <li className="p-2 hover:bg-gray-100">
+//                       <a href="https://website.grader.com/">
+//                         <span className="icon icon-check"></span> <div className="text-black">English</div>
+//                       </a>
+//                     </li>
+//                     <li className="p-2 hover:bg-gray-100">
+//                       <a href="https://website.grader.com/es/" className="text-black">Español</a>
+//                     </li>
+//                     <li className="p-2 hover:bg-gray-100">
+//                       <a href="https://website.grader.com/fr/" className="text-black">Français</a>
+//                     </li>
+//                     <li className="p-2 hover:bg-gray-100">
+//                       <a href="https://website.grader.com/ja/" className="text-black">日本語</a>
+//                     </li>
+//                     <li className="p-2 hover:bg-gray-100">
+//                       <a href="https://website.grader.com/pt/" className="text-black">Português</a>
+//                     </li>
+//                   </ul>
+//                 )}
+//               </div> */}
+//             </div>
+//             <div className="w-full max-w-lg bg-gray-800 rounded-lg shadow-lg p-6" style={{border:"1px solid gray"}}>
+//               <div className="flex justify-center mb-4">
+//                 <img width="151px" alt="Mycto Tools logo" src="https://i.ibb.co/ww9TGKX/f7f777c2e968.png" />
+//               </div>
+//               <h1 className="text-3xl mb-5 text-center">Website Grader <sup>®</sup></h1>
+//               <p className="text-lg mb-8 text-center">
+//                 Grade your website in seconds. Then learn how to improve it for free.
+//               </p>
+//               <form onSubmit={handleSubmit} className="mb-8">
+//                 <div className="mb-4">
+//                   <input
+//                     type="text"
+//                     value={url}
+//                     onChange={(e) => setUrl(e.target.value)}
+//                     placeholder="https://example.com"
+//                     className="p-3 w-full text-lg rounded-md border border-gray-300 bg-gray-800 text-white text-center focus:outline-none"
+//                   />
+//                 </div>
+//                 <p className="text-sm text-white mt-2 text-center">
+//                   We're committed to your privacy. Mycto uses the information you provide to us to contact you about our relevant content, products, and services. You may unsubscribe from these communications at any time. For more information, check out our{" "}
+//                   <a href="" className="text-blue-500 underline">Privacy Policy</a>.
+//                 </p>
+//                 <button type="submit" className="py-3 px-8 bg-orange-600 text-white rounded-md hover:bg-orange-300 transition w-full mt-4 hover:scale-105 transform transition-transform duration-300">
+//                   Get your score
+//                 </button>
+//               </form>
+//               {loading && (
+//                 <div className="text-white text-lg mt-5 flex justify-center items-center">
+//                   <div className="loader flex justify-center items-center space-x-1">
+//                     {Array.from({ length: 15 }).map((_, index) => (
+//                       <span key={index} className="w-3.5 h-3.5 bg-white rounded-full animate-bounce" style={{ animationDelay: `${index * 0.15}s` }}></span>
+//                     ))}
+//                   </div>
+//                 </div>
+//               )}
+//               {error && <div className="text-red-500 text-base mt-5">{error}</div>}
+//             </div>
+//           </div>
+//         </PageSpeedProvider>
+//       ) : null}
+//     </>
+//   );
+// };
+
+// export default WebsiteGrader;
+
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PageSpeedProvider from '../Context/context';
+import PageSpeedProvider from "../Context/context";
 
 const WebsiteGrader = () => {
-  const [url, setUrl] = useState("");
+  const [url, setUrl] = useState(""); // Set initial state to an empty string
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const trimmedUrl = url.trim();
+    if (!/^https?:\/\//.test(trimmedUrl)) {
+      setError("Please enter a valid URL starting with http:// or https://");
+      return;
+    }
+
+
     setLoading(true);
     setError(null);
 
@@ -699,85 +848,47 @@ const WebsiteGrader = () => {
   };
 
   return (
-    <>
-      {url ? (
-        <PageSpeedProvider url={url}>
-          <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4 animate-fadeIn">
-            <div className="absolute top-4 right-4 flex items-end space-x-4 mb-5">
-              <div className="relative">
-                <button
-                  className="flex items-center space-x-2 text-black rounded-3xl border-2 border-gray-500 hover:scale-105 transform transition-transform duration-300"
-                  onClick={() => setShowLanguageOptions(!showLanguageOptions)}
-                >
-                  English <span className="icon icon-angle-down"></span>
-                </button>
-                {showLanguageOptions && (
-                  <ul className="absolute bg-white border rounded-md mt-2 w-40">
-                    <li className="p-2">
-                      <a href="https://website.grader.com/de/" className="text-black">Deutsch</a>
-                    </li>
-                    <li className="p-2 hover:bg-gray-100">
-                      <a href="https://website.grader.com/">
-                        <span className="icon icon-check"></span> <div className="text-black">English</div>
-                      </a>
-                    </li>
-                    <li className="p-2 hover:bg-gray-100">
-                      <a href="https://website.grader.com/es/" className="text-black">Español</a>
-                    </li>
-                    <li className="p-2 hover:bg-gray-100">
-                      <a href="https://website.grader.com/fr/" className="text-black">Français</a>
-                    </li>
-                    <li className="p-2 hover:bg-gray-100">
-                      <a href="https://website.grader.com/ja/" className="text-black">日本語</a>
-                    </li>
-                    <li className="p-2 hover:bg-gray-100">
-                      <a href="https://website.grader.com/pt/" className="text-black">Português</a>
-                    </li>
-                  </ul>
-                )}
-              </div>
-            </div>
-            <div className="w-full max-w-lg bg-gray-800 rounded-lg shadow-lg p-6" style={{border:"1px solid gray"}}>
-              <div className="flex justify-center mb-4">
-                <img width="151px" alt="Mycto Tools logo" src="https://i.ibb.co/ww9TGKX/f7f777c2e968.png" />
-              </div>
-              <h1 className="text-3xl mb-5 text-center">Website Grader <sup>®</sup></h1>
-              <p className="text-lg mb-8 text-center">
-                Grade your website in seconds. Then learn how to improve it for free.
-              </p>
-              <form onSubmit={handleSubmit} className="mb-8">
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    value={url}
-                    onChange={(e) => setUrl(e.target.value)}
-                    placeholder="https://example.com"
-                    className="p-3 w-full text-lg rounded-md border border-gray-300 bg-gray-800 text-white text-center focus:outline-none"
-                  />
-                </div>
-                <p className="text-sm text-white mt-2 text-center">
-                  We're committed to your privacy. Mycto uses the information you provide to us to contact you about our relevant content, products, and services. You may unsubscribe from these communications at any time. For more information, check out our{" "}
-                  <a href="" className="text-blue-500 underline">Privacy Policy</a>.
-                </p>
-                <button type="submit" className="py-3 px-8 bg-orange-600 text-white rounded-md hover:bg-orange-300 transition w-full mt-4 hover:scale-105 transform transition-transform duration-300">
-                  Get your score
-                </button>
-              </form>
-              {loading && (
-                <div className="text-white text-lg mt-5 flex justify-center items-center">
-                  <div className="loader flex justify-center items-center space-x-1">
-                    {Array.from({ length: 15 }).map((_, index) => (
-                      <span key={index} className="w-3.5 h-3.5 bg-white rounded-full animate-bounce" style={{ animationDelay: `${index * 0.15}s` }}></span>
-                    ))}
-                  </div>
-                </div>
-              )}
-              {error && <div className="text-red-500 text-base mt-5">{error}</div>}
-            </div>
+    <PageSpeedProvider url={url}>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-900 text-white p-4 animate-fadeIn">
+        <div className="w-full max-w-lg bg-gray-800 rounded-lg shadow-lg p-6" style={{ border: "1px solid gray" }}>
+          <div className="flex justify-center mb-4">
+            <img width="151px" alt="Mycto Tools logo" src="https://i.ibb.co/ww9TGKX/f7f777c2e968.png" />
           </div>
-        </PageSpeedProvider>
-      ) : null}
-    </>
+          <h1 className="text-3xl mb-5 text-center">Website Grader <sup>®</sup></h1>
+          <p className="text-lg mb-8 text-center">
+            Grade your website in seconds. Then learn how to improve it for free.
+          </p>
+          <form onSubmit={handleSubmit} className="mb-8">
+            <div className="mb-4">
+              <input
+                type="text"
+                value={url}
+                onChange={(e) => setUrl(e.target.value)}
+                placeholder="https://example.com"
+                className="p-3 w-full text-lg rounded-md border border-gray-300 bg-gray-800 text-white text-center focus:outline-none"
+              />
+            </div>
+            <p className="text-sm text-white mt-2 text-center">
+              We're committed to your privacy. Mycto uses the information you provide to us to contact you about our relevant content, products, and services. You may unsubscribe from these communications at any time. For more information, check out our{" "}
+              <a href="" className="text-blue-500 underline">Privacy Policy</a>.
+            </p>
+            <button type="submit" className="py-3 px-8 bg-orange-600 text-white rounded-md hover:bg-orange-300 transition w-full mt-4 hover:scale-105 transform transition-transform duration-300">
+              Get your score
+            </button>
+          </form>
+          {loading && (
+            <div className="text-white text-lg mt-5 flex justify-center items-center">
+              <div className="loader flex justify-center items-center space-x-1">
+                {Array.from({ length: 15 }).map((_, index) => (
+                  <span key={index} className="w-3.5 h-3.5 bg-white rounded-full animate-bounce" style={{ animationDelay: `${index * 0.15}s` }}></span>
+                ))}
+              </div>
+            </div>
+          )}
+          {error && <div className="text-red-500 text-base mt-5">{error}</div>}
+        </div>
+      </div>
+    </PageSpeedProvider>
   );
 };
 
